@@ -1,0 +1,281 @@
+:root {
+  --bg-a: #f8f2e7;
+  --bg-b: #d8ece5;
+  --bg-c: #355c7c;
+  --surface: rgba(255, 255, 255, 0.72);
+  --surface-border: rgba(31, 42, 45, 0.12);
+  --text: #1f2a2d;
+  --muted: #46585c;
+  --accent: #0e4470;
+  --accent-dark: #0e4470;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  font-family: "Space Grotesk", "Segoe UI", sans-serif;
+  color: var(--text);
+  background:
+    linear-gradient(120deg, rgba(19, 27, 29, 0.56), rgba(19, 27, 29, 0.3)),
+    url("image.png") center / cover no-repeat fixed;
+  overflow-x: hidden;
+  position: relative;
+}
+
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  border-radius: 999px;
+  filter: blur(2px);
+  z-index: -1;
+  animation: drift 10s ease-in-out infinite alternate;
+}
+
+
+
+.layout {
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.bio-card {
+  width: min(450px, 100%);
+  background: #00000041;
+  border: 1px solid var(--surface-border);
+  backdrop-filter: blur(12px);
+  border-radius: 28px;
+  padding: clamp(22px, 3.4vw, 34px);
+
+  animation: rise 0.6s ease-out both;
+}
+
+.bio-card__header {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 20px;
+  align-items: center;
+}
+
+.bio-card__avatar {
+  width: clamp(102px, 18vw, 146px);
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 22px;
+  
+  box-shadow: 0 14px 30px -22px rgba(14, 21, 23, 0.62);
+}
+
+.eyebrow {
+  margin: 0;
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+h1 {
+  margin: 6px 0 5px;
+  font-size: clamp(1.7rem, 4vw, 2.45rem);
+  line-height: 1.02;
+}
+
+.role {
+  color: #fff;
+  margin: 0;
+  font-size: 1rem;
+  color: var(--muted);
+}
+
+.bio-card__text {
+  color: #fff;
+  margin: 20px 0 0;
+  line-height: 1.6;
+  max-width: 65ch;
+}
+
+.tags {
+  margin: 20px 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  font-family: "JetBrains Mono", "Consolas", monospace;
+  font-size: 0.84rem;
+}
+
+.tags li {
+  padding: 8px 11px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.84);
+  border: 1px solid rgba(31, 42, 45, 0.12);
+}
+
+.actions {
+  margin: 24px 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.button {
+  text-decoration: none;
+  border-radius: 14px;
+  padding: 11px 16px;
+  font-weight: 600;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.button:hover {
+  transform: translateY(-2px);
+}
+
+.button--primary {
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 14px 24px -14px rgb(0, 83, 161);
+}
+
+.button--primary:hover {
+  background: var(--accent-dark);
+}
+
+.button--ghost {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.86);
+  border: 1px solid rgba(31, 42, 45, 0.18);
+}
+
+.socials {
+  margin: 21px 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.socials a {
+  color: var(--text);
+  text-decoration: none;
+  padding: 5px 8px;
+  border-radius: 8px;
+}
+
+.socials a:hover {
+  background: rgba(255, 255, 255, 0.68);
+}
+.body.started .info-card {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+#splash-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, var(--bg-a), var(--bg-b));
+  display: grid;
+  place-items: center;
+  z-index: 9999;
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+/* Скрываем основной контент до старта */
+body:not(.started) .layout {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(10px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+body.started .layout {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+/* Плавное исчезновение сплэша */
+.splash-hidden {
+  opacity: 0;
+  transform: scale(1.1);
+  pointer-events: none;
+}
+
+/* Убедимся, что кнопка видна на фоне */
+.splash-button {
+  font-family: "Space Grotesk", sans-serif;
+  border: 2px solid var(--text);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 14px 32px;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+}
+
+.splash-button:hover {
+  transform: translateY(-3px);
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes drift {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(0, 16px, 0) scale(1.04);
+  }
+}
+
+@media (max-width: 640px) {
+  body {
+    background-attachment: scroll, scroll;
+  }
+
+  .layout {
+    padding: 16px;
+  }
+
+  .bio-card {
+    border-radius: 22px;
+    padding: 18px;
+  }
+
+  .bio-card__header {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .bio-card__avatar {
+    width: min(48vw, 160px);
+  }
+}
